@@ -17,8 +17,6 @@ if [ $# -lt 2 ]
       echo "yum groupinstall ${group} -y"
     done
 
-
-
     packages=(zlib-devel openssl-devel libffi httpd httpd-devel sqlite-devel git curl-devel wget nano mod_ssl openssl gcc ruby-devel libxml2 libxml2-devel libxslt libxslt-devel)
 
     for package in ${packages[@]}; do
@@ -27,23 +25,30 @@ if [ $# -lt 2 ]
 
     echo "yum update -y"
 
-    # Download and install some libraries
+
+    # Download and install some libraries via wget
 
     # assumes .tar.gz
-    libraries=(http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz http://ftp.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.gz  )
+    libraries=(http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz http://ftp.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.gz)
 
     for library in ${libraries[@]}; do
+
       echo "cd /sysprep"
       echo "wget ${library}"
-      #f = $(basename $library)
+      
+      # Drop the url prefix
       filename=${library##*/}
+      # Drop the .gz
       tarfile=${filename%.*}
+      # Drop the .tar
       folder=${tarfile%.*}
+
       echo "tar xzvf ${filename}"
       echo "cd /sysprep/${folder}"
       echo "./configure --prefix=/usr/local"
       echo "make"
       echo "make install"
+
     done
 
 
