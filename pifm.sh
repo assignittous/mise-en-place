@@ -11,10 +11,13 @@ if [ $# -lt 2 ]
 
     # Dependency installation
 
-    # redundant?
+    groups=("Development Tools" development-libs)
 
-    #yum groupinstall 'Development Tools' -y  
-    #yum groupinstall development-libs -y  
+    for group in "${groups[@]}"; do
+      echo "yum groupinstall ${group} -y"
+    done
+
+
 
     packages=(zlib-devel openssl-devel libffi httpd httpd-devel sqlite-devel git curl-devel wget nano mod_ssl openssl gcc ruby-devel libxml2 libxml2-devel libxslt libxslt-devel)
 
@@ -59,7 +62,7 @@ if [ $# -lt 2 ]
     # Clone the chef cookbook
     #cd /var
 
-    echo "git clone  $2"
+    echo "git clone $2"
 
     # Run chef
     echo "chef-client --local-mode --switch $2.json"
