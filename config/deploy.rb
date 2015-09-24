@@ -51,6 +51,8 @@ set :deploy_to, '/var/www/my_app_name'
 
 
 namespace :provision do
+
+
   task :test do
     log.info "test"
     on roles(:app) do
@@ -59,6 +61,7 @@ namespace :provision do
   end
 
   # add ssh key to prevent future password prompts
+  desc "Add ssh public key to server's authorized keys"
   task :sshkey do
     file = File.open("#{File.expand_path('~')}/.ssh/id_rsa.pub", "rb")
     contents = file.read
@@ -68,24 +71,19 @@ namespace :provision do
     end
   end
 
+
+  desc "Create /sysprep on server"
   task :sysprep do
     log.info "starting"
     on roles(:app) do
-
-      # execute "sudo yum install git -y"
       
       execute "sudo rm -r /sysprep -r -f"
       execute "sudo mkdir /sysprep -p"
 
-
-
-
-      execute 'sudo git clone https://github.com/assignittous/pifm-centos.git /sysprep/pifm'
-      execute 'sudo chmod ugo+rwx /sysprep/pifm/pifm.sh'
-
     end
   end
 
+  desc "Install yum packages defined in dependencies.yml"
   task :yum do
     on roles(:app) do
       groups = dependencies['yum']['groups'].collect { |g| "\"#{g}\""}
@@ -96,6 +94,7 @@ namespace :provision do
     end
   end
 
+  desc "Install tarballs via wget defined in dependencies.yml"
   task :tarballs do
     on roles(:app) do
       tarballs = dependencies['tarballs']
@@ -108,8 +107,6 @@ namespace :provision do
 
         within('/sysprep') do
           
-
-
           execute "sudo wget #{tarball} -o /sysprep/#{filename}"         
           execute "sudo tar xzf #{filename} -C /sysprep"
 
@@ -127,6 +124,7 @@ namespace :provision do
     end
   end
 
+  desc "Install rpms defined in dependencies.yml"
   task :rpm do
     packages = dependencies['rpm']
     packages.each do |package|
@@ -136,20 +134,19 @@ namespace :provision do
 
   end
 
+  desc "Clone git repos defined in dependencies.yml"
   task :git_clones do
     on roles(:app) do
 
       #execute 'sudo git clone https://github.com/assignittous/pifm-centos.git /sysprep/pifm'
-      #execute 'sudo chmod ugo+rwx /sysprep/pifm/pifm.sh'
+
 
     end
   end
 
-
-
-
-
 end
+
+
 
 namespace :deploy do
 
