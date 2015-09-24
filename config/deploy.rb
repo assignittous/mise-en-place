@@ -52,6 +52,19 @@ set :deploy_to, '/var/www/my_app_name'
 
 namespace :provision do
 
+  desc "Provision a server that already has ssh installed"
+  task :complete do
+
+    authorize_ssh_key
+    sysprep
+    yum
+    tarballs
+    rpm
+    git_clones
+    chef_client
+
+  end
+
 
   task :test do
     log.info "test"
@@ -62,19 +75,18 @@ namespace :provision do
 
   # add ssh key to prevent future password prompts
   desc "Add ssh public key to server's authorized keys"
-  task :sshkey do
+  task :authorize_ssh_key do
     file = File.open("#{File.expand_path('~')}/.ssh/id_rsa.pub", "rb")
-    contents = file.read
-    puts contents
+    public_key = file.read
     on roles(:app, :web, :db) do
-      execute "echo \"#{contents}\n\" >> ~/.ssh/authorized_keys"
+      execute "echo \"#{public_key}\n\" >> ~/.ssh/authorized_keys"
     end
   end
 
 
   desc "Create /sysprep on server"
   task :sysprep do
-    log.info "starting"
+
     on roles(:app) do
       
       execute "sudo rm -r /sysprep -r -f"
@@ -114,7 +126,6 @@ namespace :provision do
         end          
 
         within("/sysprep/#{folder}") do
-          execute "pwd"
           execute "sudo /sysprep/#{folder}/configure" # --prefix=/usr/local"
           execute "sudo make"
           execute "sudo make install"
@@ -144,6 +155,11 @@ namespace :provision do
     end
   end
 
+  desc "Run chef"
+  task :chef_client do
+
+  end
+
 end
 
 
@@ -151,15 +167,7 @@ end
 namespace :deploy do
 
 
-  task :provision do
-    log.info "Provision"
-    on roles(:app) do
 
-      execute "pwd"
-    end
-
-
-  end
   task :starting do
     log.info "Preflight-------------------"
   end
