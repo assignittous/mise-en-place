@@ -6,7 +6,7 @@ Simple provisioning script for CentOS Servers using Capistrano and Chef.
 
 1. You have Ruby 2.x.x installed
 2. You use Chef
-3. 
+
 
 ## Getting Started
 
@@ -18,3 +18,7 @@ Simple provisioning script for CentOS Servers using Capistrano and Chef.
 ## Provisioning Tasks
 
 tbd
+
+## Assumptions
+
+Your chef solution is stored in a git based repo.
