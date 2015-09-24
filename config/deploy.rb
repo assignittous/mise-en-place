@@ -49,6 +49,9 @@ set :deploy_to, '/var/www/my_app_name'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+task :test do
+  log.info "test"
+end
 
 namespace :provision do
 
@@ -156,7 +159,9 @@ namespace :provision do
 
   desc "Run chef"
   task :chef_client do
-
+    on roles(:app) do
+      execute 'pwd'
+    end
   end
 
 end
