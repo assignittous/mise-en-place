@@ -1,0 +1,29 @@
+yum:
+  groups:
+    - Development Tools
+    - development-libs
+  packages:
+    - zlib-devel
+    - openssl-devel
+    - libffi
+    - httpd
+    - httpd-devel
+    - sqlite-devel
+    - git
+    - curl-devel
+    - wget
+    - nano
+    - mod_ssl
+    - openssl
+    - gcc
+    - ruby-devel
+    - libxml2
+    - libxml2-devel
+    - libxslt
+    - libxslt-devel
+tarballs:
+  - http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
+  - ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz
+  - http://ftp.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.gz
+rpm:
+  - http://yum.postgresql.org/9.3/redhat/rhel-latest-i386/pgdg-centos93-9.3-1.noarch.rpm 

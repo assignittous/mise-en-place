@@ -1,14 +1,29 @@
+require 'pathname'
+
+require 'logger'
+
+log = Logger.new(STDERR)
+
+
+require 'yaml'
+servers = YAML::load(File.open('servers.yml'))
+dependencies = YAML::load(File.open('dependencies.yml'))
+
+
 # config valid only for current version of Capistrano
+
 lock '3.4.0'
 
 set :application, 'pifm-centos'
-set :repo_url, 'git@example.com:me/my_repo.git'
+#set :repo_url, 'https://github.com/assignittous/pifm-centos.git'
+
+
 # https://github.com/assignittous/pifm-centos.git
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-# set :deploy_to, '/var/www/my_app_name'
+set :deploy_to, '/var/www/my_app_name'
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -34,7 +49,146 @@ set :repo_url, 'git@example.com:me/my_repo.git'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+
+namespace :provision do
+  task :sysprep do
+    log.info "starting"
+    on roles(:app) do
+
+      # execute "sudo yum install git -y"
+      
+      execute "sudo rm -r /sysprep -r -f"
+      execute "sudo mkdir /sysprep -p"
+
+
+
+
+      execute 'sudo git clone https://github.com/assignittous/pifm-centos.git /sysprep/pifm'
+      execute 'sudo chmod ugo+rwx /sysprep/pifm/pifm.sh'
+
+    end
+  end
+
+  task :yum do
+    on roles(:app) do
+      groups = dependencies['yum']['groups'].collect { |g| "\"#{g}\""}
+      execute "sudo yum groupinstall #{groups.join(' ')} -y"
+
+      packages = dependencies['yum']['packages'].collect { |g| "\"#{g}\""}
+      execute "sudo yum install #{packages.join(' ')} -y"
+    end
+  end
+
+  task :tarballs do
+    on roles(:app) do
+      tarballs = dependencies['tarballs']
+      tarballs.each do |tarball|
+
+
+        filename = Pathname.new(tarball).basename
+        folder = filename.sub('.tar.gz','') 
+
+
+        within('/sysprep') do
+          
+
+
+          execute "sudo wget #{tarball} -o /sysprep/#{filename}"         
+          execute "sudo tar xzf #{filename} -C /sysprep"
+
+
+        end          
+
+        within("/sysprep/#{folder}") do
+          execute "pwd"
+          execute "sudo /sysprep/#{folder}/configure" # --prefix=/usr/local"
+          execute "sudo make"
+          execute "sudo make install"
+        end
+      end
+      
+    end
+  end
+
+  task :rpm do
+    packages = dependencies['rpm'].collect { |g| "\"#{g}\""}
+    execute "wget #{packages.join(' ')}"
+  end
+
+  task :git_clones do
+    on roles(:app) do
+
+      execute 'sudo git clone https://github.com/assignittous/pifm-centos.git /sysprep/pifm'
+      execute 'sudo chmod ugo+rwx /sysprep/pifm/pifm.sh'
+
+    end
+  end
+
+
+
+
+
+end
+
 namespace :deploy do
+
+
+  task :provision do
+    log.info "Provision"
+    on roles(:app) do
+
+      execute "pwd"
+    end
+
+
+  end
+  task :starting do
+    log.info "Preflight-------------------"
+  end
+
+
+  task :started do
+
+  end
+
+  task :updating do
+
+  end
+
+  task :updated do
+
+  end
+
+  task :publishing do
+
+  end
+
+  task :published do
+
+  end
+
+  task :reverting do
+
+  end
+
+  task :reverted do
+
+  end
+
+
+
+  task :finishing do
+
+  end
+
+  task :finishing_rollback do
+
+  end
+
+  task :finished do
+    log.info "Postflight"
+  end
+
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
