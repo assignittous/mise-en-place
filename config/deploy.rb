@@ -55,7 +55,6 @@ namespace :provision do
   desc "Provision a server that already has ssh installed"
   task :complete do
 
-    authorize_ssh_key
     sysprep
     yum
     tarballs
