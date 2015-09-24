@@ -51,6 +51,23 @@ set :deploy_to, '/var/www/my_app_name'
 
 
 namespace :provision do
+  task :test do
+    log.info "test"
+    on roles(:app) do
+      execute "pwd"
+    end
+  end
+
+  # add ssh key to prevent future password prompts
+  task :sshkey do
+    file = File.open("#{File.expand_path('~')}/.ssh/id_rsa.pub", "rb")
+    contents = file.read
+    puts contents
+    on roles(:app, :web, :db) do
+      execute "echo \"#{contents}\n\" >> ~/.ssh/authorized_keys"
+    end
+  end
+
   task :sysprep do
     log.info "starting"
     on roles(:app) do
@@ -122,8 +139,8 @@ namespace :provision do
   task :git_clones do
     on roles(:app) do
 
-      execute 'sudo git clone https://github.com/assignittous/pifm-centos.git /sysprep/pifm'
-      execute 'sudo chmod ugo+rwx /sysprep/pifm/pifm.sh'
+      #execute 'sudo git clone https://github.com/assignittous/pifm-centos.git /sysprep/pifm'
+      #execute 'sudo chmod ugo+rwx /sysprep/pifm/pifm.sh'
 
     end
   end
