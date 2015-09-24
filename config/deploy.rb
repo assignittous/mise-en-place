@@ -111,8 +111,12 @@ namespace :provision do
   end
 
   task :rpm do
-    packages = dependencies['rpm'].collect { |g| "\"#{g}\""}
-    execute "wget #{packages.join(' ')}"
+    packages = dependencies['rpm']
+    packages.each do |package|
+      execute "rpm i #{package} "
+    end
+
+
   end
 
   task :git_clones do
