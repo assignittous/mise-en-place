@@ -9,17 +9,6 @@ servers = YAML::load(File.open('servers.yml'))
 
 namespace :provision do
 
-  desc "Provision a server that already has ssh installed"
-  task :complete do
-
-    sysprep
-    yum
-    tarballs
-    rpm
-    git_clones
-    chef_client
-
-  end
 
 
   task :test do
@@ -117,6 +106,9 @@ namespace :provision do
       execute 'pwd'
     end
   end
+  desc "Provision a server that already has ssh installed"
+  task :complete  => [ :sysprep ,:yum ,:tarballs ,:rpm ,:git_clones ,:chef_client ]
+
 
 end
 
