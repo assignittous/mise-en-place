@@ -5,7 +5,10 @@ Simple provisioning script for CentOS Servers using Capistrano and Chef.
 ## Dependencies/Assumptions
 
 1. You have Ruby 2.x.x installed
-2. You use Chef
+2. You use Chef to provision servers
+
+
+
 
 
 ## Getting Started
@@ -19,6 +22,14 @@ Simple provisioning script for CentOS Servers using Capistrano and Chef.
 
 tbd
 
-## Assumptions
 
-Your chef solution is stored in a git based repo.
+## Configuration
+
+* Dependencies.yml has some sensible defaults, but can be edited to suit
+
+
+
+## Conventions
+
+* Your chef solution is stored in a git based repo.
+* 

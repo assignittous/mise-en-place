@@ -38,7 +38,7 @@ namespace :provision do
   task :ssh_prep do
     on roles(:app) do
       ssh_account = config['ssh_account']
-      execute "ssh-keygen -t rsa -C \"#{ssh_account}\""
+      # execute "ssh-keygen -t rsa -f ~/.ssh/id_rsa.pub -C \"#{ssh_account}\" -N \"\""
       execute "cat ~/.ssh/id_rsa.pub"
     end
   end
@@ -98,8 +98,10 @@ namespace :provision do
   desc "Install rpms defined in dependencies.yml"
   task :rpm do
     packages = dependencies['rpm']
-    packages.each do |package|
-      execute "rpm i #{package} "
+    on roles(:app) do
+      packages.each do |package|
+        execute "sudo rpm -i #{package} "
+      end
     end
 
 
@@ -108,9 +110,11 @@ namespace :provision do
   desc "Clone git repos defined in repos.yml"
   task :git_clones do
     on roles(:app) do
-      chef_repo = dependencies['repos']['chef']
-      
-      execute 'sudo git clone #{chef_repo} /var/chef'
+      chef_repo = repos['chef']
+      execute "sudo mkdir /var/chef"
+      execute "sudo chmod ugo+rw /var/chef"
+      # don't sudo the git
+      execute "git clone #{chef_repo} /var/chef"
 
 
     end
@@ -119,7 +123,13 @@ namespace :provision do
   desc "Run chef"
   task :chef_client do
     on roles(:app) do
-      execute 'pwd'
+      within('/var/chef') do
+        
+        execute "sudo chef-client --local-mode -c /var/chef/solo.rb"         
+
+
+
+      end      
     end
   end
   desc "Provision a server that already has ssh installed"
