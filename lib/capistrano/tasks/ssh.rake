@@ -27,9 +27,9 @@ namespace :ssh do
     on roles(:app) do
 
       fingerprints.each do |fingerprint|
-        execute "ssh-keygen -R #{fingerprint['hostname']}"
-        execute "ssh-keygen -R #{fingerprint['ip']}"
-        execute "ssh-keygen -R #{fingerprint['hostname']},#{fingerprint['ip']}"
+        #execute "ssh-keygen -R #{fingerprint['hostname']}"
+        #execute "ssh-keygen -R #{fingerprint['ip']}"
+        #execute "ssh-keygen -R #{fingerprint['hostname']},#{fingerprint['ip']}"
         execute "ssh-keyscan -H #{fingerprint['hostname']},#{fingerprint['ip']} >> ~/.ssh/known_hosts"
         execute "ssh-keyscan -H #{fingerprint['ip']} >> ~/.ssh/known_hosts"
         execute "ssh-keyscan -H #{fingerprint['hostname']} >> ~/.ssh/known_hosts"

@@ -15,8 +15,8 @@ Simple provisioning script for CentOS Servers using Capistrano and Chef.
 
 1. Pull this repo
 2. `bundle install`
-3. Create a `servers.yml` file. You can use the `servers.yml.sample` as a template
-4. `cap {environment_name} provision:complete` to do a full provision of the server.
+3. Create a `config.yml` file. You can use the `config.yml.sample` as a template
+4. `cap {environment_name} provision` to do a full provision of the server.
 
 ## Provisioning Tasks
 
