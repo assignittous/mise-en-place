@@ -5,9 +5,6 @@ require 'logger'
 log = Logger.new(STDERR)
 
 
-require 'yaml'
-servers = YAML::load(File.open('servers.yml'))
-dependencies = YAML::load(File.open('dependencies.yml'))
 
 
 # config valid only for current version of Capistrano
@@ -23,7 +20,7 @@ set :application, 'pifm-centos'
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, '/var/www/my_app_name'
+# set :deploy_to, '/var/www/my_app_name'
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -49,14 +46,9 @@ set :deploy_to, '/var/www/my_app_name'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-task :test do
-  log.info "test"
-end
-
 
 
 namespace :deploy do
-
 
 
   task :starting do
@@ -117,3 +109,6 @@ namespace :deploy do
   end
 
 end
+
+task :provision  => [ "dependencies:all", "chef:clone", "chef:run" ]
+

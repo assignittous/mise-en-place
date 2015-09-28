@@ -1,5 +1,6 @@
 require 'yaml'
-servers = YAML::load(File.open('servers.yml'))
+config = YAML::load(File.open('config.yml'))
+servers = config["servers"]
 
 # server-based syntax
 # ======================

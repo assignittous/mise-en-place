@@ -3,12 +3,14 @@ log = Logger.new(STDERR)
 
 
 require 'yaml'
-servers = YAML::load(File.open('servers.yml'))
-dependencies = YAML::load(File.open('dependencies.yml'))
-repos = YAML::load(File.open('repos.yml'))
-config = YAML::load(File.open('config.yml'))
 
-namespace :provision do
+dependencies = YAML::load(File.open('dependencies.yml'))
+
+config = YAML::load(File.open('config.yml'))
+servers = config['servers']
+chef_repo = config['chef']
+
+namespace :dependencies do
 
   # get the email below from a .gitignore'd file
   # ssh-keygen -t rsa -C "email@email.com"
@@ -26,22 +28,7 @@ namespace :provision do
   end
 
   # add ssh key to prevent future password prompts
-  desc "Add ssh public key to server's authorized keys"
-  task :authorize_ssh_key do
-    file = File.open("#{File.expand_path('~')}/.ssh/id_rsa.pub", "rb")
-    public_key = file.read
-    on roles(:app, :web, :db) do
-      execute "echo \"#{public_key}\n\" >> ~/.ssh/authorized_keys"
-    end
-  end
 
-  task :ssh_prep do
-    on roles(:app) do
-      ssh_account = config['ssh_account']
-      # execute "ssh-keygen -t rsa -f ~/.ssh/id_rsa.pub -C \"#{ssh_account}\" -N \"\""
-      execute "cat ~/.ssh/id_rsa.pub"
-    end
-  end
 
 
   desc "Create /sysprep on server"
@@ -107,33 +94,8 @@ namespace :provision do
 
   end
 
-  desc "Clone git repos defined in repos.yml"
-  task :git_clones do
-    on roles(:app) do
-      chef_repo = repos['chef']
-      execute "sudo mkdir /var/chef"
-      execute "sudo chmod ugo+rw /var/chef"
-      # don't sudo the git
-      execute "git clone #{chef_repo} /var/chef"
-
-
-    end
-  end
-
-  desc "Run chef"
-  task :chef_client do
-    on roles(:app) do
-      within('/var/chef') do
-        
-        execute "sudo chef-client --local-mode -c /var/chef/solo.rb"         
-
-
-
-      end      
-    end
-  end
   desc "Provision a server that already has ssh installed"
-  task :complete  => [ :sysprep ,:yum ,:tarballs ,:rpm ,:git_clones ,:chef_client ]
+  task :all  => [ :sysprep ,:yum ,:tarballs ,:rpm  ]
 
 
 end

@@ -1,9 +1,0 @@
-test: 
-  address: 127.0.0.1:2222
-  remote_user: vagrant
-staging: 
-  address: 127.0.0.1:2222
-  remote_user: vagrant
-production: 
-  address: 127.0.0.1:2222
-  remote_user: vagrant
