@@ -10,6 +10,9 @@ config = YAML::load(File.open('config.yml'))
 servers = config['servers']
 chef_repo = config['chef']
 
+fingerprints = config['fingerprints']
+log.info fingerprints
+puts config
 namespace :ssh do
 
   task :test do
@@ -19,6 +22,23 @@ namespace :ssh do
       execute "echo \"Test Successful\""
     end
   end
+
+  task :fingerprints do
+
+    on roles(:app) do
+
+      fingerprints.each do |fingerprint|
+        execute "ssh-keygen -R #{fingerprint['hostname']}"
+        execute "ssh-keygen -R #{fingerprint['ip']}"
+        execute "ssh-keygen -R #{fingerprint['hostname']},#{fingerprint['ip']}"
+        execute "ssh-keyscan -H #{fingerprint['hostname']},#{fingerprint['ip']} >> ~/.ssh/known_hosts"
+        execute "ssh-keyscan -H #{fingerprint['ip']} >> ~/.ssh/known_hosts"
+        execute "ssh-keyscan -H #{fingerprint['hostname']} >> ~/.ssh/known_hosts"
+      end
+
+
+    end
+  end  
 
   desc "Add ssh public key to server's authorized keys"
   task :authorize do

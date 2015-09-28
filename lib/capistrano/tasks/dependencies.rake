@@ -12,23 +12,6 @@ chef_repo = config['chef']
 
 namespace :dependencies do
 
-  # get the email below from a .gitignore'd file
-  # ssh-keygen -t rsa -C "email@email.com"
-
-  #todo - make the /var/www dir -- validate that this is not chef
-  #todo - set the permissions of the /var/www dir
-
-  #todo - get the ssh-key for adding to git repo deploy keys
-
-  task :test do
-    log.info "test"
-    on roles(:app) do
-      execute "pwd"
-    end
-  end
-
-  # add ssh key to prevent future password prompts
-
 
 
   desc "Create /sysprep on server"

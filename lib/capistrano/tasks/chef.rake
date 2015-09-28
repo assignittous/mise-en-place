@@ -2,6 +2,8 @@ require 'logger'
 log = Logger.new(STDERR)
 
 
+
+
 require 'yaml'
 
 dependencies = YAML::load(File.open('dependencies.yml'))
@@ -10,14 +12,23 @@ config = YAML::load(File.open('config.yml'))
 servers = config['servers']
 chef_repo = config['chef']
 
+
 namespace :chef do
+
+
+
+
 
   desc "Clone git repos defined in config.yml"
   task :clone do
     on roles(:app) do
-      execute "sudo mkdir /var/chef"
+      execute "sudo mkdir -p /var/chef"
       execute "sudo chmod ugo+rw /var/chef"
       # don't sudo the git
+
+
+
+
       execute "git clone #{chef_repo} /var/chef"
 
 

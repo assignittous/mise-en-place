@@ -110,5 +110,5 @@ namespace :deploy do
 
 end
 
-task :provision  => [ "dependencies:all", "chef:clone", "chef:run" ]
+task :provision  => [ "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:run" ]
 
