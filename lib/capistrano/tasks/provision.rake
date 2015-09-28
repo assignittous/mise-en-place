@@ -4,12 +4,19 @@ log = Logger.new(STDERR)
 
 require 'yaml'
 servers = YAML::load(File.open('servers.yml'))
-
-
+dependencies = YAML::load(File.open('dependencies.yml'))
+repos = YAML::load(File.open('repos.yml'))
+config = YAML::load(File.open('config.yml'))
 
 namespace :provision do
 
+  # get the email below from a .gitignore'd file
+  # ssh-keygen -t rsa -C "email@email.com"
 
+  #todo - make the /var/www dir -- validate that this is not chef
+  #todo - set the permissions of the /var/www dir
+
+  #todo - get the ssh-key for adding to git repo deploy keys
 
   task :test do
     log.info "test"
@@ -25,6 +32,14 @@ namespace :provision do
     public_key = file.read
     on roles(:app, :web, :db) do
       execute "echo \"#{public_key}\n\" >> ~/.ssh/authorized_keys"
+    end
+  end
+
+  task :ssh_prep do
+    on roles(:app) do
+      ssh_account = config['ssh_account']
+      execute "ssh-keygen -t rsa -C \"#{ssh_account}\""
+      execute "cat ~/.ssh/id_rsa.pub"
     end
   end
 
@@ -90,11 +105,12 @@ namespace :provision do
 
   end
 
-  desc "Clone git repos defined in dependencies.yml"
+  desc "Clone git repos defined in repos.yml"
   task :git_clones do
     on roles(:app) do
-
-      #execute 'sudo git clone https://github.com/assignittous/pifm-centos.git /sysprep/pifm'
+      chef_repo = dependencies['repos']['chef']
+      
+      execute 'sudo git clone #{chef_repo} /var/chef'
 
 
     end
