@@ -11,8 +11,7 @@ servers = config['servers']
 chef_repo = config['chef']
 
 fingerprints = config['fingerprints']
-log.info fingerprints
-puts config
+
 namespace :ssh do
 
   task :test do
