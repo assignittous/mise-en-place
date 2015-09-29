@@ -6,8 +6,6 @@ yum:
     - zlib-devel
     - openssl-devel
     - libffi
-    - httpd
-    - httpd-devel
     - sqlite-devel
     - git
     - curl-devel
