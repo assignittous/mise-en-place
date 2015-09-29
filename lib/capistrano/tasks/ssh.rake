@@ -18,7 +18,7 @@ namespace :ssh do
     on roles(:app) do
       ssh_account = config['ssh_account']
       # execute "ssh-keygen -t rsa -f ~/.ssh/id_rsa.pub -C \"#{ssh_account}\" -N \"\""
-      execute "echo \"Test Successful\""
+      execute "sudo echo \"Test Successful\""
     end
   end
 
@@ -27,6 +27,7 @@ namespace :ssh do
     on roles(:app) do
 
       fingerprints.each do |fingerprint|
+        # these will fail when known_hosts doesn't exist
         #execute "ssh-keygen -R #{fingerprint['hostname']}"
         #execute "ssh-keygen -R #{fingerprint['ip']}"
         #execute "ssh-keygen -R #{fingerprint['hostname']},#{fingerprint['ip']}"

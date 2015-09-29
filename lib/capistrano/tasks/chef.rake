@@ -25,10 +25,6 @@ namespace :chef do
       execute "sudo mkdir -p /var/chef"
       execute "sudo chmod ugo+rw /var/chef"
       # don't sudo the git
-
-
-
-
       execute "git clone #{chef_repo} /var/chef"
 
 
@@ -38,7 +34,7 @@ namespace :chef do
   task :pull do
     on roles(:app) do
       within('/var/chef') do
-        execute "git pull"         
+        execute :git, :pull       
       end     
     end
   end
