@@ -77,8 +77,17 @@ namespace :dependencies do
 
   end
 
+  task :ruby do
+    on roles(:app) do
+      packages.each do |package|
+        execute "sudo gem install bundler"
+      end
+    end
+
+  end
+
   desc "Provision a server that already has ssh installed"
-  task :all  => [ :sysprep ,:yum ,:tarballs ,:rpm  ]
+  task :all  => [ :sysprep ,:yum ,:tarballs ,:rpm, :ruby ]
 
 
 end
