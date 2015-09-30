@@ -24,4 +24,4 @@ tarballs:
   - ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz
 
 rpm:
-  - https://opscode-omnibus-packages.s3.amazonaws.com/el/6/i686/chef-12.4.2-1.el6.i386.rpm
+  - https://opscode-omnibus-packages.s3.amazonaws.com/el/7/x86_64/chef-12.4.3-1.el7.x86_64.rpm
