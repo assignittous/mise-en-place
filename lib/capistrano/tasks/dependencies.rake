@@ -70,7 +70,7 @@ namespace :dependencies do
     packages = dependencies['rpm']
     on roles(:app) do
       packages.each do |package|
-        execute "sudo rpm -i #{package} "
+        execute "sudo rpm -i --force #{package} "
       end
     end
 
