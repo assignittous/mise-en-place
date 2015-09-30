@@ -50,5 +50,6 @@ namespace :chef do
   end
 
   task :update => [ "pull", "run" ]
+  task :install => [ "clone", "run" ]
 
 end

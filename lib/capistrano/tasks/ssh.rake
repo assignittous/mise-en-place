@@ -22,6 +22,17 @@ namespace :ssh do
     end
   end
 
+  task :sudofix do
+    # makes the path for sudo same as normal user
+    on roles(:app) do
+
+        execute "sudo echo 'alias sudo=\"sudo env PATH=$PATH\"' >> ~/.bashrc"
+
+
+
+    end
+  end
+
   task :fingerprints do
 
     on roles(:app) do
@@ -49,10 +60,10 @@ namespace :ssh do
     end
   end
 
-  task :ssh_prep do
+  task :keygen do
     on roles(:app) do
       ssh_account = config['ssh_account']
-      # execute "ssh-keygen -t rsa -f ~/.ssh/id_rsa.pub -C \"#{ssh_account}\" -N \"\""
+      execute "ssh-keygen -t rsa -f ~/.ssh/id_rsa -C \"#{ssh_account}\" -N \"\""
       execute "cat ~/.ssh/id_rsa.pub"
     end
   end
