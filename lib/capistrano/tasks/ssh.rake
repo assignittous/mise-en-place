@@ -42,9 +42,9 @@ namespace :ssh do
         #execute "ssh-keygen -R #{fingerprint['hostname']}"
         #execute "ssh-keygen -R #{fingerprint['ip']}"
         #execute "ssh-keygen -R #{fingerprint['hostname']},#{fingerprint['ip']}"
-        execute "ssh-keyscan -H #{fingerprint['hostname']},#{fingerprint['ip']} >> ~/.ssh/known_hosts"
-        execute "ssh-keyscan -H #{fingerprint['ip']} >> ~/.ssh/known_hosts"
-        execute "ssh-keyscan -H #{fingerprint['hostname']} >> ~/.ssh/known_hosts"
+        execute "ssh-keyscan -H -t rsa,dsa #{fingerprint['hostname']},#{fingerprint['ip']} >> ~/.ssh/known_hosts"
+        execute "ssh-keyscan -H -t rsa,dsa #{fingerprint['ip']} >> ~/.ssh/known_hosts"
+        execute "ssh-keyscan -H -t rsa,dsa #{fingerprint['hostname']} >> ~/.ssh/known_hosts"
       end
 
 
