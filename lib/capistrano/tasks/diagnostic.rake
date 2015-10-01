@@ -34,12 +34,16 @@ task :diagnostic do
       execute "gem list"        
       log.info "===========================================================Gem Environment"
       execute "gem environment"        
+
+      log.info "===========================================================Var Directory"
+    
+        execute "sudo ls -l -a /var"
+
       log.info "===========================================================Chef Directory"
-      log.info "Testing chef directory"
-      within('/var/chef') do
-        execute "pwd"         
-        execute "ls -l -a"
-      end      
+    
+        execute "sudo ls -l -a /var/chef"
+
+
       log.info "===========================================================SSH directory"
 
         execute "ls ~/.ssh"
