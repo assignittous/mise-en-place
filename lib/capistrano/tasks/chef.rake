@@ -49,6 +49,9 @@ namespace :chef do
     end
   end
 
+  # sudo chef-client --override-runlist "recipe[mycookbook::recipe]” --local-mode -c /var/chef/solo.rb`
+
+
   task :update => [ "pull", "run" ]
   task :install => [ "clone", "run" ]
 
