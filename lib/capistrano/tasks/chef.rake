@@ -44,12 +44,12 @@ namespace :chef do
   task :run do
     on roles(:app) do
       within('/var/chef') do
-        execute "sudo chef-client --local-mode -c /var/chef/solo.rb"         
+        execute "sudo chef-client --local-mode -c /var/chef/client.rb"         
       end      
     end
   end
 
-  # sudo chef-client --override-runlist "recipe[mycookbook::recipe]” --local-mode -c /var/chef/solo.rb`
+  # sudo chef-client --override-runlist "recipe[mycookbook::recipe]” --local-mode -c /var/chef/client.rb`
 
 
   task :update => [ "pull", "run" ]
