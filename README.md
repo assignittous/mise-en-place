@@ -26,7 +26,7 @@ an error will be thrown blocking the provision from occurring.
 
 To force a re-run (*think carefully* if you want to do that, your chef project may clobber existing data), 
 simply delete the `~/provision.log` file from the server and 
-retry the `provision task.
+retry the `provision` task.
 
 
 ## Getting Started
