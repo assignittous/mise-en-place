@@ -18,6 +18,15 @@ task :environment do
 
 end
 
+
+task :git_test do
+    on roles(:app) do
+      execute "ssh -v git@bitbucket.org"
+    end
+
+
+end
+
 task :diagnostic do
 
 

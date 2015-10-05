@@ -52,7 +52,9 @@ namespace :deploy do
 
 
   task :starting do
-    log.info "Preflight-------------------"
+
+    log.error "I think you meant cap #{fetch(:stage)} provision"
+    raise "deploy is disabled for this project"
   end
 
 
