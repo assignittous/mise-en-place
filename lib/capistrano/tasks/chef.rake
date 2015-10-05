@@ -42,11 +42,20 @@ namespace :chef do
 
   desc "Run chef"
   task :run do
-    on roles(:app) do
-      within('/var/chef') do
-        execute "sudo chef-client --local-mode -c /var/chef/client.rb"         
-      end      
+
+    env = fetch(:stage).to_s
+
+    if ['test', 'staging', 'production'].include? env
+
+      on roles(:app) do
+        within('/var/chef') do
+          execute "sudo chef-client --local-mode -c /var/chef/client.rb -j /var/chef/#{env}.json"         
+        end      
+      end
+    else
+      log.error "Chef was not run. The environment #{env} is not one of 'test', 'staging' or 'production'"
     end
+
   end
 
   # sudo chef-client --override-runlist "recipe[mycookbook::recipe]” --local-mode -c /var/chef/client.rb`

@@ -1,7 +1,6 @@
 require 'logger'
 log = Logger.new(STDERR)
 
-
 require 'yaml'
 
 dependencies = YAML::load(File.open('dependencies.yml'))
@@ -11,6 +10,13 @@ servers = config['servers']
 chef_repo = config['chef']
 
 fingerprints = config['fingerprints']
+
+task :environment do
+
+
+  puts fetch(:stage)
+
+end
 
 task :diagnostic do
 
