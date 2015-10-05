@@ -8,7 +8,7 @@ dependencies = YAML::load(File.open('dependencies.yml'))
 
 config = YAML::load(File.open('config.yml'))
 servers = config['servers']
-chef_repo = config['chef']
+chef = config['chef']
 
 namespace :dependencies do
 
@@ -77,6 +77,18 @@ namespace :dependencies do
 
   end
 
+
+  task :flag do
+    env = fetch(:stage).to_s
+    
+    on roles(:app) do
+      execute "touch ~/provision.log"
+      execute "echo 'Chef Repo #{chef[env]['tag']}' > ~/provision.log"
+      #execute "sudo gem install bundler"
+    end
+
+  end
+
   task :ruby do
     on roles(:app) do
       execute "ruby --v"
@@ -86,7 +98,7 @@ namespace :dependencies do
   end
 
   desc "Provision a server that already has ssh installed"
-  task :all  => [ :sysprep ,:yum ,:tarballs, :rpm]
+  task :all  => [ :sysprep ,:yum ,:tarballs, :rpm, :flag]
 
 
 end
