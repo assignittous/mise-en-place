@@ -10,12 +10,12 @@ dependencies = YAML::load(File.open('dependencies.yml'))
 
 config = YAML::load(File.open('config.yml'))
 servers = config['servers']
-chef_repo = config['chef']
+chef = config['chef']
 
 
 namespace :chef do
 
-
+  env = fetch(:stage).to_s
 
 
 
@@ -25,8 +25,8 @@ namespace :chef do
       execute "sudo mkdir -p /var/chef"
       execute "sudo chmod ugo+rw /var/chef"
       # don't sudo the git
-      execute "git clone #{chef_repo} /var/chef"
-
+      #execute "git clone #{chef_repo} /var/chef"
+      execute "git clone -b #{chef[env]['tag']} --depth 1 #{chef[env]['repo']} /var/chef"
 
     end
   end
