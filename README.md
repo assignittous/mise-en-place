@@ -8,7 +8,11 @@ Simple provisioning script for CentOS Servers using Capistrano and Chef.
 2. You use Chef to provision servers
 3. Your Chef is in a git repo
 
+## Important For Mac Users
 
+On Mac, Capistrano appears to *NOT* use the server's ssh key when trying to perform a git pull from Github/Bitbucket.
+
+To ensure that the git pull of the chef repository works, add your Mac's ssh key (`~/.ssh/id_rsa.pub`) to the Chef repo's deployment keys.
 
 
 ## Getting Started
