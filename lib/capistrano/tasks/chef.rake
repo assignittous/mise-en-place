@@ -15,13 +15,15 @@ chef = config['chef']
 
 namespace :chef do
 
-  env = fetch(:stage).to_s
+  
 
 
 
   desc "Clone git repos defined in config.yml"
   task :clone do
+    env = fetch(:stage).to_s
     on roles(:app) do
+      execute "sudo rm -r -f /var/chef"
       execute "sudo mkdir -p /var/chef"
       execute "sudo chmod ugo+rw /var/chef"
       # don't sudo the git
@@ -42,8 +44,8 @@ namespace :chef do
 
   desc "Run chef"
   task :run do
-
     env = fetch(:stage).to_s
+    
 
     if ['test', 'staging', 'production'].include? env
 
