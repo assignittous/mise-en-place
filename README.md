@@ -15,6 +15,20 @@ On Mac, Capistrano appears to *NOT* use the server's ssh key when trying to perf
 To ensure that the git pull of the chef repository works, add your Mac's ssh key (`~/.ssh/id_rsa.pub`) to the Chef repo's deployment keys.
 
 
+## Safety Flag
+
+When the chef runlist is completed, mise-en-place writes a file to the server: `~/provision.log`
+
+The contents of this log file are the tag used for the chef repo clone.
+
+Before running the `provision` task, mise-en-place checks if this file exists on the server. If it does detect it,
+an error will be thrown blocking the provision from occurring.
+
+To force a re-run (*think carefully* if you want to do that, your chef project may clobber existing data), 
+simply delete the `~/provision.log` file from the server and 
+retry the `provision task.
+
+
 ## Getting Started
 
 1. Pull this repo
