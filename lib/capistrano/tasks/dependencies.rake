@@ -78,16 +78,7 @@ namespace :dependencies do
   end
 
 
-  task :flag do
-    env = fetch(:stage).to_s
-    
-    on roles(:app) do
-      execute "touch ~/provision.log"
-      execute "echo 'Chef Repo #{chef[env]['tag']}' > ~/provision.log"
-      #execute "sudo gem install bundler"
-    end
 
-  end
 
   task :ruby do
     on roles(:app) do
@@ -98,7 +89,7 @@ namespace :dependencies do
   end
 
   desc "Provision a server that already has ssh installed"
-  task :all  => [ :sysprep ,:yum ,:tarballs, :rpm, :flag]
+  task :all  => [ :sysprep ,:yum ,:tarballs, :rpm]
 
 
 end

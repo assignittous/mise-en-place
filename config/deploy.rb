@@ -112,6 +112,6 @@ namespace :deploy do
 
 end
 
-task :provision  => [ "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:run" ]
+task :provision  => [ "flag:check", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:run", "flag:write" ]
 
-task :provision_with_ssh  => [ "ssh:authorize", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:run" ]
+task :provision_with_ssh  => [ "ssh:authorize", "flag:check", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:run" , "flag:write"]
