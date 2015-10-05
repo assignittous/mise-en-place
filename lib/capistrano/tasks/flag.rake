@@ -1,7 +1,7 @@
 require 'logger'
 log = Logger.new(STDERR)
-
-
+config = YAML::load(File.open('config.yml'))
+chef = config['chef']
 
 namespace :flag do
 
