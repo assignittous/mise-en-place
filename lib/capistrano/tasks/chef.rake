@@ -36,7 +36,7 @@ namespace :chef do
   task :pull do
     on roles(:app) do
       within('/var/chef') do
-        execute :git, :pull       
+        execute :git, :clone       
       end     
     end
   end
@@ -63,7 +63,7 @@ namespace :chef do
   # sudo chef-client --override-runlist "recipe[mycookbook::recipe]” --local-mode -c /var/chef/client.rb`
 
 
-  task :update => [ "pull", "run" ]
+  task :update => [ "clone", "run" ]
   task :install => [ "clone", "run" ]
 
 end
