@@ -36,7 +36,8 @@ retry the `provision` task.
 3. Create a `config.yml` file. You can use the `config.yml.sample` as a template
 4. Create a `secrets` folder. Within `secrets`, create a `chef` folder
 5. Put your `test.json`, `staging.json` and `production.json` files for chef into `secrets/chef`
-4. `cap {environment_name} provision` to do a full provision of the server.
+6. `cap {environment_name} provision` to do a full provision of the server.
+7. After the provision has been deemed successful, `cap chef:wipe` to avoid leaving any secrets behind.
 
 
 ## Conventions
