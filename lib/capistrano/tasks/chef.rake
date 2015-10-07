@@ -16,6 +16,14 @@ chef = config['chef']
 namespace :chef do
 
   
+  desc "Clone git repos defined in config.yml"
+  task :wipe do
+    env = fetch(:stage).to_s
+    on roles(:app) do
+      execute "sudo rm -r -f /var/chef"
+
+    end
+  end
 
 
 
@@ -23,7 +31,7 @@ namespace :chef do
   task :clone do
     env = fetch(:stage).to_s
     on roles(:app) do
-      execute "sudo rm -r -f /var/chef"
+
       execute "sudo mkdir -p /var/chef"
       execute "sudo chmod ugo+rw /var/chef"
       # don't sudo the git
@@ -73,7 +81,7 @@ namespace :chef do
   # sudo chef-client --override-runlist "recipe[mycookbook::recipe]” --local-mode -c /var/chef/client.rb`
 
 
-  task :update => [ "clone", "secrets", "run" ]
-  task :install => [ "clone", "secrets", "run" ]
+  task :update => [ "wipe", "clone", "secrets", "run" ]
+  task :install => [ "wipe", "clone", "secrets", "run" ]
 
 end
