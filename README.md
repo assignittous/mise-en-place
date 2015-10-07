@@ -78,7 +78,7 @@ Adds your ssh public key to the server's authorized key. Assumes the location is
 
 `cap {environment} ssh:fingerprints`
 
-Adds the fingerprints items in `config.yml` to the current server's `known_hosts` file.
+Adds the fingerprints items in `config.yml` to the current server's `known_hosts` file. Useful only if you're not using ssh forwarding.
 
 ### Dependencies
 
