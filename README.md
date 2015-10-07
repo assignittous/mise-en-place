@@ -51,7 +51,7 @@ Runs `[ "flag:check", "dependencies:all", "ssh:fingerprints", "chef:clone", "che
 `..with_ssh` runs `[ "ssh:authorize", "flag:check", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:secrets", "chef:run" , "flag:write"]`
 
 
-
+See the sections below for what all of the tasks do.
 
 
 
@@ -113,11 +113,24 @@ Runs the chef-client command.
 
 `cap {environment} chef:update`
 
-Runs `chef:pull` and `chef:run`
+Runs `chef:clone` and `chef:run`
+
+`cap {environment} chef:wipe`
+
+Wipes out the `/var/chef` folder on the remote server.
+
+### Flag
+
+`cap {environment} flag:check`
+
+Checks for the existence of `~/provision.log` on the server. If it is there, it throws an error. 
+
+This prevents Chef from being re-run accidentally in a destructive fashion using `mise-en-place`. To force a re-run, remove `~/provision.log`
 
 
+`cap {environment} flag:write`
 
-
+Creates a `~/provision.log` file to prevent re-running Chef (using `mise-en-place`)
 
 ## Configuration
 
