@@ -39,7 +39,6 @@ retry the `provision` task.
 4. `cap {environment_name} provision` to do a full provision of the server.
 
 
-
 ## Conventions
 
 Assumptions about environments
