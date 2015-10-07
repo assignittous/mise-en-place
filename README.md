@@ -39,6 +39,16 @@ retry the `provision` task.
 4. `cap {environment_name} provision` to do a full provision of the server.
 
 
+
+## Conventions
+
+Assumptions about environments
+
+* `development` is the active development environment on a developer machine
+* `test` is a vagrant vm that is run locally on a developer machine
+* `staging` is an mirror of production
+* `production` is.. well, production
+
 ## Provisioning Tasks
 
 
