@@ -37,7 +37,7 @@ retry the `provision` task.
 4. Create a `secrets` folder. Within `secrets`, create a `chef` folder
 5. Put your `test.json`, `staging.json` and `production.json` files for chef into `secrets/chef`
 6. `cap {environment_name} provision` to do a full provision of the server.
-7. After the provision has been deemed successful, `cap chef:wipe` to avoid leaving any secrets behind.
+7. After the provision has been deemed successful, `cap {environment} chef:wipe` to avoid leaving any secrets behind.
 
 
 ## Conventions
