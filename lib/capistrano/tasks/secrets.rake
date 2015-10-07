@@ -20,7 +20,7 @@ namespace :secrets do
     env = fetch(:stage).to_s
 
 
-    file = "secrets/#{env}.sh"
+    file = "secrets/chef/#{env}.json"
     on roles(:app) do 
       #secrets = postgresql[env]
 
@@ -40,7 +40,7 @@ namespace :secrets do
   task :test do
     #file = "secrets/#{env}.sh"
     on roles(:app) do 
-      execute "printenv"
+      execute "echo $PG_POSTGRES"
 
       
       

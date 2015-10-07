@@ -41,6 +41,15 @@ namespace :chef do
     end
   end
 
+  task :secrets do
+    env = fetch(:stage).to_s
+    file = "secrets/chef/#{env}.json"
+    on roles(:app) do 
+      upload! file, "#{env}.json"
+      execute "sudo mv -f ~/#{env}.json /var/chef"
+    end
+  end
+
 
   desc "Run chef"
   task :run do
@@ -51,7 +60,8 @@ namespace :chef do
 
       on roles(:app) do
         within('/var/chef') do
-          execute "sudo chef-client --local-mode -c /var/chef/client.rb -j /var/chef/#{env}.json"         
+          execute "sudo chef-client --local-mode -c /var/chef/client.rb -j /var/chef/#{env}.json --logfile ~/chef.log"     
+          #  --log_level debug    
         end      
       end
     else
@@ -63,7 +73,7 @@ namespace :chef do
   # sudo chef-client --override-runlist "recipe[mycookbook::recipe]” --local-mode -c /var/chef/client.rb`
 
 
-  task :update => [ "clone", "run" ]
-  task :install => [ "clone", "run" ]
+  task :update => [ "clone", "secrets", "run" ]
+  task :install => [ "clone", "secrets", "run" ]
 
 end

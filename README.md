@@ -34,16 +34,26 @@ retry the `provision` task.
 1. Pull this repo
 2. `bundle install`
 3. Create a `config.yml` file. You can use the `config.yml.sample` as a template
+4. Create a `secrets` folder. Within `secrets`, create a `chef` folder
+5. Put your `test.json`, `staging.json` and `production.json` files for chef into `secrets/chef`
 4. `cap {environment_name} provision` to do a full provision of the server.
+
 
 ## Provisioning Tasks
 
 
 ### "One Step"
 
-`cap {environment} provision`
+`cap {environment} provision` or `cap {environment} provision_with_ssh` 
 
-Runs `dependencies:all`, `ssh:fingerprints`, `chef:clone`, `chef:run`
+Runs `[ "flag:check", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:secrets", "chef:run", "flag:write" ]`
+
+`..with_ssh` runs `[ "ssh:authorize", "flag:check", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:secrets", "chef:run" , "flag:write"]`
+
+
+
+
+
 
 
 ### SSH
@@ -88,6 +98,10 @@ Runs `dependencies:sysprep`, `dependencies:yum`, `dependencies:tarballs`, `depen
 `cap {environment} chef:clone`
 
 Clones the chef repo in the `config.yml` file.
+
+`cap {environment} chef:secrets`
+
+Copies `secrets/chef/{environment}.json` to `/var/chef/{environment}.json` on the server.
 
 `cap {environment} chef:pull`
 

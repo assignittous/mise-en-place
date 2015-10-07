@@ -119,6 +119,6 @@ task :reboot do
 end
 
 
-task :provision  => [ "flag:check", "secrets:write", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:run", "flag:write" ]
+task :provision  => [ "flag:check", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:secrets", "chef:run", "flag:write" ]
 
-task :provision_with_ssh  => [ "ssh:authorize", "flag:check", "secrets:write", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:run" , "flag:write"]
+task :provision_with_ssh  => [ "ssh:authorize", "flag:check", "dependencies:all", "ssh:fingerprints", "chef:clone", "chef:secrets", "chef:run" , "flag:write"]
