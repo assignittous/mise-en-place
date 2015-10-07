@@ -119,7 +119,7 @@ Clones the chef repo in the `config.yml` file.
 
 `cap {environment} chef:run`
 
-Runs the chef-client command.
+Runs the chef-client command. The output is logged to `~/chef.log`
 
 `cap {environment} chef:update`
 
