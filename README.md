@@ -5,8 +5,8 @@ Simple provisioning script for CentOS Servers using Capistrano and Chef.
 ## Dependencies/Assumptions
 
 1. You have Ruby 2.x.x installed
-2. You use Chef to provision servers
-3. Your Chef is in a git repo
+2. You use Chef Client to provision servers (and not Chef Server)
+3. Your Chef solution is in a git repo
 
 ## Important For Mac Users or If You Are Using SSH Forwarding
 
