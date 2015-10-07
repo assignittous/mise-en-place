@@ -16,7 +16,7 @@ chef = config['chef']
 namespace :chef do
 
   
-  desc "Clone git repos defined in config.yml"
+  desc "Remove /var/chef"
   task :wipe do
     env = fetch(:stage).to_s
     on roles(:app) do
