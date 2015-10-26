@@ -39,6 +39,10 @@ retry the `provision` task.
 6. `cap {environment_name} provision` to do a full provision of the server.
 7. After the provision has been deemed successful, `cap {environment} chef:wipe` to avoid leaving any secrets behind.
 
+## Gotchas
+
+* Mise-en-place does not trap any errors that may be related to any recipes you are running in the chef repo specified in your `config.yml` file. Make sure 
+your `{environment_name}.json` files have all the correct parameters required by your chef repo to run correctly.
 
 ## Conventions
 
